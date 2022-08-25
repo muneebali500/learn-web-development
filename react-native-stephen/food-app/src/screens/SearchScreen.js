@@ -20,26 +20,32 @@ export default function SearchScreen() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <>
       <SearchBar
         term={term}
         onTermChange={setTerm}
         onTermSubmit={() => searchApi(term)}
       />
       {errorMessage ? <Text>{errorMessage}</Text> : null}
-      <Text>there are about {results.length} restaurants</Text>
+
       <Button onPress={() => searchApi(term)} title="Search Results" />
       <ScrollView>
         <ResultsList
           results={filterResultsByPrice(`$`)}
           title="Cost Effective"
+          // navigation={navigation}
         />
-        <ResultsList results={filterResultsByPrice(`$$`)} title="Bit Pricer" />
+        <ResultsList
+          results={filterResultsByPrice(`$$`)}
+          title="Bit Pricer"
+          // navigation={navigation}
+        />
         <ResultsList
           results={filterResultsByPrice(`$$$`)}
           title="Big Spender!"
+          // navigation={navigation}
         />
       </ScrollView>
-    </View>
+    </>
   );
 }

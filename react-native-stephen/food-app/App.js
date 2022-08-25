@@ -2,9 +2,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { StyleSheet } from "react-native";
+import ResultsShowScreen from "./src/screens/ResultsShowScreen";
 
 import SearchScreen from "./src/screens/SearchScreen";
-import DetailScreen from "./src/screens/DetailScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -17,7 +17,7 @@ export default function App() {
           component={SearchScreen}
           options={{ title: "Business Search" }}
         />
-        <Stack.Screen name="Details" component={DetailScreen} />
+        <Stack.Screen name="ResultsShow" component={ResultsShowScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

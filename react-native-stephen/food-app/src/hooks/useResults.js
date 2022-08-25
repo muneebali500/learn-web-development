@@ -5,7 +5,7 @@ export default function useResults() {
   const [results, setResults] = useState([]);
   const [errorMessage, setErrorMessage] = useState(``);
 
-  console.log({ results });
+  // console.log({ results });
 
   async function searchApi(term) {
     try {
@@ -17,7 +17,7 @@ export default function useResults() {
         },
       });
 
-      console.log(response.data.businesses);
+      // console.log(response.data.businesses);
       setResults(response.data.businesses);
     } catch (err) {
       setErrorMessage(`something went wrong`);
