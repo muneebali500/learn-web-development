@@ -1,0 +1,20 @@
+ Solidity Notes - Stephen Grider
+
+1- Storage vs Memory:-
+	a) sometimes references where our contract stores data i-e: 
+		i) storage is like hard drive; (permenantly stores data) e.g: initialization of variables
+		ii) memory is like RAM; (temporararily stores data) e.g: arguments to functions are lost when function execution ends.
+	b) sometimes references how our solidity variables store values i-e:
+		i) storage is Reference (referencing to same memory location)
+		ii) memory is Value	(a new copy is created)
+		e.g of Reference:- unit[] numbers = [2, 4, 5]; unint[] myArray = numbers; myArray[0] = 1;
+		e.g: of Value:- uint[] numbers = [2, 4, 5]; function myArray(uint[] arr) {arr[0] = 1}; myArray(numbers);	
+2- Local variables (variables defined in functions or within curly braces {}) are stored in Memory;
+3- Global variables are stored in Storage  
+
+4- Mappings:- Collection of key value pairs (as objects in JS). All keys and all values must be of same 'Type'.
+	=> Diff b/w array and mapping:- Array has a 'linear time search' while Mapping has a 'constant time search'.
+	=> Key points need to be considered are:
+	a) Keys are not stored. e.g: there is a lookup process where key goes through a hashing function to find index
+	b) Values are not iterable. e.g: can't fetch all values using loop
+	c) All values exist. e.g: if search for a key does not exist, it will not return undefined.		 

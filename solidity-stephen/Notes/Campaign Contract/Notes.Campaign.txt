@@ -1,0 +1,6 @@
+Campaign Contract
+
+=> Purpose:- to create a campaign for kickstarter project
+=> Problem:- a) Malicious campaigns; people raise money and just ran
+	     b) People failed to deliver the product
+		
