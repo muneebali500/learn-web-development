@@ -24,5 +24,3 @@ async function deploy() {
 }
 
 deploy();
-
-// contract deployed to 0x49E2Bb73d04EB608ccc8C83add3a957b4e4858a1
