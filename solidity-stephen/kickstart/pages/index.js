@@ -1,7 +1,6 @@
-import "semantic-ui-css/semantic.min.css";
-
 import factory from "../ethereum/factory";
 import { Button, Card } from "semantic-ui-react";
+import Layout from "../components/Layout";
 
 export default function Home({ campaigns }) {
   function renderCampaigns() {
@@ -17,10 +16,17 @@ export default function Home({ campaigns }) {
   }
 
   return (
-    <div>
+    <Layout>
+      <h3>Open Campaigns</h3>
+
+      <Button
+        floated="right"
+        content="Create Campaign"
+        icon="add circle"
+        primary
+      />
       <div>{renderCampaigns()}</div>
-      <Button content="Create Campaign" icon="add circle" primary />
-    </div>
+    </Layout>
   );
 }
 
