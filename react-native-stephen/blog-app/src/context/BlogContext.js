@@ -11,7 +11,7 @@ function blogReducer(state, action) {
         },
       ];
     case "delete_blogPost":
-      return state.filter((blog) => blog.id !== action.payload.id);
+      return state.filter((blog) => blog.id !== action.payload);
     default:
       return state;
   }
@@ -25,7 +25,7 @@ function addBlogPost(dispatch) {
 
 function deleteBlogPost(dispatch) {
   return (id) => {
-    dispatch({ type: `delete_blogPost`, payload: { id } });
+    dispatch({ type: `delete_blogPost`, payload: id });
   };
 }
 

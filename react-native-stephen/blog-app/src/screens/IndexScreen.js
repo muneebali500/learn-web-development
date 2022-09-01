@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useLayoutEffect } from "react";
 import {
   View,
   Text,
@@ -12,25 +12,36 @@ import { Feather } from "@expo/vector-icons";
 
 import { Context } from "../context/BlogContext";
 
-export default function IndexScreen({ navigation: { navigate } }) {
+export default function IndexScreen({ navigation }) {
   const { state, addBlogPost, deleteBlogPost } = useContext(Context);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "Blogs",
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("CreateScreen")}>
+          <Feather name="plus" size={30} style={styles.plusIcon} />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View>
       <Button onPress={addBlogPost} title="Add Post" />
       <FlatList
         data={state}
-        keyExtractor={(blogPost) => blogPost.title}
+        keyExtractor={(blogPost) => blogPost.id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigate("ShowScreen", { id: item.id })}
+            onPress={() => navigation.navigate("ShowScreen", { id: item.id })}
           >
             <View style={styles.row}>
               <Text style={styles.title}>
                 {item.title} - {item.id}
               </Text>
               <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
-                <Feather style={styles.icon} name="trash" />
+                <Feather style={styles.deleteIcon} name="trash" />
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
@@ -52,7 +63,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
   },
-  icon: {
+  deleteIcon: {
     fontSize: 24,
+  },
+  plusIcon: {
+    marginRight: 10,
   },
 });
