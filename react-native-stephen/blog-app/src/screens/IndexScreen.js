@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  Button,
   TouchableOpacity,
 } from "react-native";
 
@@ -13,7 +12,7 @@ import { Feather } from "@expo/vector-icons";
 import { Context } from "../context/BlogContext";
 
 export default function IndexScreen({ navigation }) {
-  const { state, addBlogPost, deleteBlogPost } = useContext(Context);
+  const { state, deleteBlogPost } = useContext(Context);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -28,7 +27,6 @@ export default function IndexScreen({ navigation }) {
 
   return (
     <View>
-      <Button onPress={addBlogPost} title="Add Post" />
       <FlatList
         data={state}
         keyExtractor={(blogPost) => blogPost.id}
@@ -40,6 +38,7 @@ export default function IndexScreen({ navigation }) {
               <Text style={styles.title}>
                 {item.title} - {item.id}
               </Text>
+              <Text>{item.content}</Text>
               <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
                 <Feather style={styles.deleteIcon} name="trash" />
               </TouchableOpacity>

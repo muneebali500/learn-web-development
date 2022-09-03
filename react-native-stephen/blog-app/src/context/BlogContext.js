@@ -7,9 +7,20 @@ function blogReducer(state, action) {
         ...state,
         {
           id: Math.floor(Math.random() * 99999),
-          title: `blog post #${state.length + 1}`,
+          title: action.payload.title,
+          content: action.payload.content,
         },
       ];
+    case "edit_blogPost":
+      return state.map((blog) =>
+        blog.id === action.payload.id
+          ? {
+              ...blog,
+              title: action.payload.title,
+              content: action.payload.content,
+            }
+          : blog
+      );
     case "delete_blogPost":
       return state.filter((blog) => blog.id !== action.payload);
     default:
@@ -18,8 +29,16 @@ function blogReducer(state, action) {
 }
 
 function addBlogPost(dispatch) {
-  return () => {
-    dispatch({ type: `add_blogPost` });
+  return (title, content, callback) => {
+    dispatch({ type: `add_blogPost`, payload: { title, content } });
+    callback();
+  };
+}
+
+function editBlogPost(dispatch) {
+  return (id, title, content, callback) => {
+    dispatch({ type: `edit_blogPost`, payload: { id, title, content } });
+    callback();
   };
 }
 
@@ -31,6 +50,6 @@ function deleteBlogPost(dispatch) {
 
 export const { Context, Provider } = createDataContext(
   blogReducer,
-  { addBlogPost, deleteBlogPost },
+  { addBlogPost, deleteBlogPost, editBlogPost },
   []
 );
