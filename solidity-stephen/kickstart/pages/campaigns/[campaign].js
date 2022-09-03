@@ -1,23 +1,68 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import factory from "../../ethereum/factory";
+import Campaign from "../../ethereum/campaign";
 import Layout from "../../components/Layout";
+import { Card } from "semantic-ui-react";
+import web3 from "../../ethereum/web3";
 
-export default function campaign({ campaigns }) {
-  const router = useRouter();
-  const { query } = router;
+export default function campaign(props) {
+  const {
+    minimumContribution,
+    balance,
+    requestsCount,
+    approversCount,
+    manager,
+  } = props;
 
-  const campaign = campaigns.find((address) => address === query.campaign);
+  function renderCards() {
+    const items = [
+      {
+        header: manager,
+        meta: `Address of a Manager`,
+        description: `The manager has created the campaign and can request to withdraw money`,
+        style: { overflowWrap: `break-word` },
+      },
+      {
+        header: minimumContribution,
+        meta: `Minimum Contribution (wei)`,
+        description: `You must contribute at least this much wei to become a approver`,
+      },
+      {
+        header: requestsCount,
+        meta: `Number of Requests`,
+        description: `A request to withdraw money from the contract. Requests must be approved by approvers`,
+      },
+      {
+        header: approversCount,
+        meta: `Number of Approvers`,
+        description: `Number of people who have already donated to this campaign`,
+      },
+      {
+        header: web3.utils.fromWei(balance, `ether`),
+        meta: `Campaign Balance (ether)`,
+        description: `How much money this campaign has left to spend`,
+      },
+    ];
+
+    return <Card.Group items={items} />;
+  }
 
   return (
     <Layout>
-      <h1>{campaign}</h1>
+      <h1>Campaign Details</h1>
+      {renderCards()}
     </Layout>
   );
 }
 
-campaign.getInitialProps = async () => {
-  const campaigns = await factory.methods.getDeployedCampaigns().call();
+campaign.getInitialProps = async (context) => {
+  const campaign = Campaign(context.query.campaign);
 
-  return { campaigns };
+  const summary = await campaign.methods.getSummary().call();
+
+  return {
+    minimumContribution: summary[0],
+    balance: summary[1],
+    requestsCount: summary[2],
+    approversCount: summary[3],
+    manager: summary[4],
+  };
 };

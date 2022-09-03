@@ -1,14 +1,22 @@
+import Link from "next/link";
+
 import { Menu } from "semantic-ui-react";
 
 export default function Header() {
   return (
     <Menu style={{ marginTop: `10px` }}>
-      <Menu.Item name="crowdcoin">CrowdCoin</Menu.Item>
+      <Link href="/" passHref>
+        <Menu.Item name="crowdcoin">CrowdCoin</Menu.Item>
+      </Link>
 
       <Menu.Menu position="right">
-        <Menu.Item name="campaigns">Campaings</Menu.Item>
+        <Link href="/" passHref>
+          <Menu.Item name="campaigns">Campaings</Menu.Item>
+        </Link>
 
-        <Menu.Item name="add">+</Menu.Item>
+        <Link href="/campaigns/new" passHref>
+          <Menu.Item name="add">+</Menu.Item>
+        </Link>
       </Menu.Menu>
     </Menu>
   );
