@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect } from "react";
+import React, { useContext, useLayoutEffect, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,7 +12,12 @@ import { Feather } from "@expo/vector-icons";
 import { Context } from "../context/BlogContext";
 
 export default function IndexScreen({ navigation }) {
-  const { state, deleteBlogPost } = useContext(Context);
+  const { state, deleteBlogPost, getBlogPosts } = useContext(Context);
+
+  useEffect(() => {
+    console.log(`post called`);
+    getBlogPosts();
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
