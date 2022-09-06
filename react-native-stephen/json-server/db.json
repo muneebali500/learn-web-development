@@ -1,0 +1,19 @@
+{
+  "blogposts": [
+    {
+      "id": 1,
+      "title": "post edited",
+      "content": "this is my first post"
+    },
+    {
+      "title": "post 2",
+      "content": "this is post 2",
+      "id": 2
+    },
+    {
+      "title": "post 7",
+      "content": "this is post 7",
+      "id": 7
+    }
+  ]
+}

@@ -15,9 +15,13 @@ export default function IndexScreen({ navigation }) {
   const { state, deleteBlogPost, getBlogPosts } = useContext(Context);
 
   useEffect(() => {
-    console.log(`post called`);
-    getBlogPosts();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", () => {
+      getBlogPosts();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
