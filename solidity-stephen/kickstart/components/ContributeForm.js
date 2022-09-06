@@ -9,11 +9,16 @@ export default function ContributeForm({ address }) {
   const router = useRouter();
 
   const [value, setValue] = useState(``);
+  const [errorMessage, setErrorMessage] = useState(``);
+  const [loading, setLoading] = useState(false);
 
   async function onSubmit(e) {
     e.preventDefault();
 
     const campaign = Campaign(address);
+
+    setLoading(true);
+    setErrorMessage(``);
 
     try {
       const accounts = await web3.eth.getAccounts();
@@ -23,11 +28,16 @@ export default function ContributeForm({ address }) {
       });
 
       router.reload();
-    } catch (err) {}
+    } catch (err) {
+      setErrorMessage(err.message);
+    }
+
+    setLoading(false);
+    setValue(``);
   }
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form onSubmit={onSubmit} error={!!errorMessage}>
       <Form.Field>
         <label>Amount to Contribute</label>
         <Input
@@ -38,8 +48,10 @@ export default function ContributeForm({ address }) {
         />
       </Form.Field>
 
-      {/* <Message error header="Oops!" content={errorMessage} /> */}
-      <Button primary>Contribute!</Button>
+      <Message error header="Oops!" content={errorMessage} />
+      <Button primary loading={loading}>
+        Contribute!
+      </Button>
     </Form>
   );
 }
