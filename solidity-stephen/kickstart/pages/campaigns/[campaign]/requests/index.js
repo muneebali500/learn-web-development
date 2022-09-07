@@ -4,9 +4,10 @@ import { useRouter } from "next/router";
 
 import { Button } from "semantic-ui-react";
 
+import Campaign from "../../../../ethereum/campaign";
 import Layout from "../../../../components/Layout";
 
-export default function RequestIndex() {
+export default function RequestIndex({ requests, requestsCount }) {
   const router = useRouter();
   const { campaign: campaignAddress } = router.query;
 
@@ -22,8 +23,15 @@ export default function RequestIndex() {
   );
 }
 
-// RequestIndex.getInitialProps = (context) => {
-//   const { campaign } = context.query;
+RequestIndex.getInitialProps = async (context) => {
+  const campaign = Campaign(context.query.campaign);
+  const requestsCount = await campaign.methods.getRequestsCount().call();
 
-//   return { address: campaign };
-// };
+  const requests = await Promise.all(
+    Array(requestsCount)
+      .fill()
+      .map((element, index) => campaign.methods.requests(index).call())
+  );
+
+  return { requests, requestsCount };
+};
