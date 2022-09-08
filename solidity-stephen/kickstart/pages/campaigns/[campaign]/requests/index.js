@@ -2,14 +2,21 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { Button } from "semantic-ui-react";
+import { Button, Table } from "semantic-ui-react";
 
 import Campaign from "../../../../ethereum/campaign";
 import Layout from "../../../../components/Layout";
+import RequestRow from "../../../../components/RequestRow";
 
-export default function RequestIndex({ requests, requestsCount }) {
+export default function RequestIndex({
+  requests,
+  requestsCount,
+  approversCount,
+}) {
   const router = useRouter();
   const { campaign: campaignAddress } = router.query;
+
+  const { Header, Row, HeaderCell, Body } = Table;
 
   return (
     <Layout>
@@ -19,6 +26,32 @@ export default function RequestIndex({ requests, requestsCount }) {
           <Button primary>Add Request</Button>
         </a>
       </Link>
+
+      <Table>
+        <Header>
+          <Row>
+            <HeaderCell>ID</HeaderCell>
+            <HeaderCell>Description</HeaderCell>
+            <HeaderCell>Amount</HeaderCell>
+            <HeaderCell>Recipient</HeaderCell>
+            <HeaderCell>Approval Count</HeaderCell>
+            <HeaderCell>Approve</HeaderCell>
+            <HeaderCell>Finalize</HeaderCell>
+          </Row>
+        </Header>
+
+        <Body>
+          {requests.map((request, index) => (
+            <RequestRow
+              key={index}
+              id={index}
+              request={request}
+              address={campaignAddress}
+              approversCount={approversCount}
+            />
+          ))}
+        </Body>
+      </Table>
     </Layout>
   );
 }
@@ -26,6 +59,7 @@ export default function RequestIndex({ requests, requestsCount }) {
 RequestIndex.getInitialProps = async (context) => {
   const campaign = Campaign(context.query.campaign);
   const requestsCount = await campaign.methods.getRequestsCount().call();
+  const approversCount = await campaign.methods.approversCount().call();
 
   const requests = await Promise.all(
     Array(requestsCount)
@@ -33,5 +67,5 @@ RequestIndex.getInitialProps = async (context) => {
       .map((element, index) => campaign.methods.requests(index).call())
   );
 
-  return { requests, requestsCount };
+  return { requests, requestsCount, approversCount };
 };

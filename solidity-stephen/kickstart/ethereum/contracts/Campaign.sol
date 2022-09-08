@@ -34,7 +34,7 @@ contract Campaign {
         require(msg.sender == manager);
         _;
     }
-
+    
     constructor(uint minimum, address creator) {
         manager = creator;
         minimumContribution = minimum;
@@ -69,8 +69,8 @@ contract Campaign {
     function approveRequest(uint index) public {
         Request storage request = requests[index];
 
-        require(approvers[msg.sender]);
-        require(!request.approvals[msg.sender]);
+        require(approvers[msg.sender]); // check if approver has donated before
+        require(!request.approvals[msg.sender]); // check if the request is not approved before
 
         request.approvals[msg.sender] = true;
         request.approvalCount++;
