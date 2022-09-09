@@ -23,7 +23,9 @@ export default function RequestIndex({
       <h3>Requests</h3>
       <Link href={`/campaigns/${campaignAddress}/requests/new`}>
         <a>
-          <Button primary>Add Request</Button>
+          <Button primary floated="right" style={{ marginBottom: 10 }}>
+            Add Request
+          </Button>
         </a>
       </Link>
 
@@ -52,6 +54,7 @@ export default function RequestIndex({
           ))}
         </Body>
       </Table>
+      <div>Found {requestsCount} requests</div>
     </Layout>
   );
 }
