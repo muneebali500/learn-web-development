@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -9,6 +9,7 @@ import TrackCreateScreen from "./screens/TrackCreateScreen";
 import AccountScreen from "./screens/AccountScreen";
 import TrackListScreen from "./screens/TrackListScreen";
 import TrackDetailScreen from "./screens/TrackDetailSCreen";
+import { Context, Provider as AuthProvider } from "./context/AuthContext";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -22,22 +23,23 @@ function TrackListFlow() {
   );
 }
 
-export default function App() {
-  const [isSignin, setIsSignin] = useState(false);
+function App() {
+  const { isSignedIn } = useContext(Context);
 
   return (
     <NavigationContainer>
-      {!isSignin ? (
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Signup"
-            component={SignupScreen}
-            options={{ headerShown: false }}
-          />
+      {!isSignedIn ? (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Signup" component={SignupScreen} />
           <Stack.Screen name="Signin" component={SinginScreen} />
         </Stack.Navigator>
       ) : (
-        <Tab.Navigator screenOptions={{ tabBarLabelPosition: "beside-icon" }}>
+        <Tab.Navigator
+          screenOptions={{
+            tabBarIconStyle: { display: `none` },
+            headerShown: false,
+          }}
+        >
           <Tab.Screen name="TrackCreate" component={TrackCreateScreen} />
           <Tab.Screen name="Account" component={AccountScreen} />
           <Tab.Screen name="TrackListFlow" component={TrackListFlow} />
@@ -46,3 +48,11 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+export default () => {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+};
