@@ -1,5 +1,3 @@
-import React from "react";
-
 import { View, Text, Button } from "react-native";
 
 export default function TrackListScreen({ navigation }) {
@@ -8,7 +6,7 @@ export default function TrackListScreen({ navigation }) {
       <Text>Track list screen</Text>
       <Button
         title="go to track detail"
-        onPress={() => navigation.navigate("TrackDetail")}
+        onPress={() => navigation.navigate("TrackDetailScreen")}
       />
     </View>
   );

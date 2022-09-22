@@ -9,7 +9,11 @@ import TrackCreateScreen from "./screens/TrackCreateScreen";
 import AccountScreen from "./screens/AccountScreen";
 import TrackListScreen from "./screens/TrackListScreen";
 import TrackDetailScreen from "./screens/TrackDetailSCreen";
-import { Context, Provider as AuthProvider } from "./context/AuthContext";
+import {
+  Context as AuthContext,
+  Provider as AuthProvider,
+} from "./context/AuthContext";
+// import { navigationRef } from "./navigationRef";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -17,21 +21,21 @@ const Stack = createNativeStackNavigator();
 function TrackListFlow() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="TrackList" component={TrackListScreen} />
-      <Stack.Screen name="TrackDetail" component={TrackDetailScreen} />
+      <Stack.Screen name="TrackListScreen" component={TrackListScreen} />
+      <Stack.Screen name="TrackDetailScreen" component={TrackDetailScreen} />
     </Stack.Navigator>
   );
 }
 
 function App() {
-  const { isSignedIn } = useContext(Context);
+  const { state } = useContext(AuthContext);
 
   return (
     <NavigationContainer>
-      {!isSignedIn ? (
+      {state.token === null ? (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Signup" component={SignupScreen} />
-          <Stack.Screen name="Signin" component={SinginScreen} />
+          <Stack.Screen name="SignupScreen" component={SignupScreen} />
+          <Stack.Screen name="SigninScreen" component={SinginScreen} />
         </Stack.Navigator>
       ) : (
         <Tab.Navigator
@@ -40,9 +44,9 @@ function App() {
             headerShown: false,
           }}
         >
-          <Tab.Screen name="TrackCreate" component={TrackCreateScreen} />
-          <Tab.Screen name="Account" component={AccountScreen} />
           <Tab.Screen name="TrackListFlow" component={TrackListFlow} />
+          <Tab.Screen name="TrackCreateScreen" component={TrackCreateScreen} />
+          <Tab.Screen name="AccountScreen" component={AccountScreen} />
         </Tab.Navigator>
       )}
     </NavigationContainer>
